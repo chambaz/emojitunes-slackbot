@@ -61,7 +61,8 @@ function handleMessage(bot, message) {
         .get(`https://emojitunes.io/api/msgs/no-emoji`)
         .set('Accept', 'application/json')
         .end((err, res) => {
-          bot.reply(message, res.msg)
+          const json = JSON.parse(res.text)
+          bot.reply(message, json.msg)
         })
 
   // emoji found so send recommendations back
@@ -93,7 +94,8 @@ function fetchRecommendationsForChannel(bot, message, emoji) {
               .get(`https://emojitunes.io/api/msgs/no-results`)
               .set('Accept', 'application/json')
               .end((err, res) => {
-                bot.reply(message, res.msg)
+                const json = JSON.parse(res.text)
+                bot.reply(message, json.msg)
               })
 
           return
@@ -116,7 +118,8 @@ function sendRecommendationToChannel(bot, message, url, emoji) {
       .set('Accept', 'application/json')
       .end((err, res) => {
         // send message to channel followed by recommendation URL
-        bot.reply(message, res.msg)
+        const json = JSON.parse(res.text)
+        bot.reply(message, json.msg)
         setTimeout(() => bot.reply(message, url), 1000)
       })
 }
