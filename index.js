@@ -101,7 +101,7 @@ function fetchRecommendationsForChannel(bot, message, emoji) {
           return
         }
 
-        sendRecommendationToChannel(bot, message, json.tracks[0].url, emoji)
+        sendRecommendationToChannel(bot, message, json.items[0].url, emoji)
       })
 }
 
