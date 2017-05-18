@@ -1,7 +1,6 @@
 // require dependencies
 const request = require('superagent')
 const emoji = require('node-emoji')
-const msgs = require('./lib/msgs')
 const Botkit = require('botkit')
 const token = process.env.SLACK_TOKEN
 const controller = Botkit.slackbot({
@@ -58,7 +57,12 @@ function handleMessage(bot, message) {
   // no emoji found so let user know
   if (!foundEmoji) {
     console.log('No emoji found in message')
-    bot.reply(message, msgs.getNoEmojiMsg())
+    request
+        .get(`https://emojitunes.io/api/msgs/no-emoji`)
+        .set('Accept', 'application/json')
+        .end((err, res) => {
+          bot.reply(message, res.msg)
+        })
 
   // emoji found so send recommendations back
   } else {
@@ -85,7 +89,13 @@ function fetchRecommendationsForChannel(bot, message, emoji) {
 
         // error from API so let user know
         if (err || json.error) {
-          bot.reply(message, msgs.getNoResultsMsg())
+          request
+              .get(`https://emojitunes.io/api/msgs/no-results`)
+              .set('Accept', 'application/json')
+              .end((err, res) => {
+                bot.reply(message, res.msg)
+              })
+
           return
         }
 
@@ -101,9 +111,12 @@ function sendRecommendationToChannel(bot, message, url, emoji) {
   }
 
 	// if no message specified then grab one from msgs module based on emoji
-  const msg = msgs.getRecommendationMsg(emoji)
-
-	// send message to channel followed by recommendation URL
-  bot.reply(message, msg)
-  setTimeout(() => bot.reply(message, url), 1000)
+  request
+      .get(`https://emojitunes.io/api/msgs/recommendation/${emoji}`)
+      .set('Accept', 'application/json')
+      .end((err, res) => {
+        // send message to channel followed by recommendation URL
+        bot.reply(message, res.msg)
+        setTimeout(() => bot.reply(message, url), 1000)
+      })
 }
