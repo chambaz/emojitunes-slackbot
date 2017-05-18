@@ -49,9 +49,9 @@ function handleMessage(bot, message) {
     // test for emoji and break when one found
     if (emoji.which(w)) {
       foundEmoji = word
-      return false
     }
 
+    // check for word playlist
     if (w.toLowerCase() === 'playlist') {
       playlist = true
     }
