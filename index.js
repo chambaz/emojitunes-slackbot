@@ -78,7 +78,7 @@ function fetchRecommendationsForChannel(bot, message, emoji) {
   console.log('Making request...')
 
   request
-      .get(`https://emojitunes.io/api/recommendations/${emoji}`)
+      .get(`https://emojitunes.io/api/recommendations/tracks/${emoji}`)
       .set('Accept', 'application/json')
       .end((err, res) => {
         if (err) {
