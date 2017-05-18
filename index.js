@@ -34,6 +34,7 @@ controller.on('direct_message', handleMessage)
 
 function handleMessage(bot, message) {
   let foundEmoji = ''
+  let playlist = false
 
   // loop through each word searching for an emoji
   message.text.split(' ').every(word => {
@@ -49,6 +50,10 @@ function handleMessage(bot, message) {
     if (emoji.which(w)) {
       foundEmoji = word
       return false
+    }
+
+    if (w.toLowerCase() === 'playlist') {
+      playlist = true
     }
 
     return true
@@ -68,17 +73,19 @@ function handleMessage(bot, message) {
   // emoji found so send recommendations back
   } else {
     console.log('Found emoji!', foundEmoji)
-    fetchRecommendationsForChannel(bot, message, foundEmoji)
+    fetchRecommendationsForChannel(bot, message, foundEmoji, playlist)
   }
 }
 
 // fetch recommendations from emojitunes API
 // pass data on and send recommendation to channel
-function fetchRecommendationsForChannel(bot, message, emoji) {
+function fetchRecommendationsForChannel(bot, message, emoji, playlist) {
   console.log('Making request...')
 
+  const type = playlist ? 'playlists' : 'tracks'
+
   request
-      .get(`https://emojitunes.io/api/recommendations/tracks/${emoji}`)
+      .get(`https://emojitunes.io/api/recommendations/${type}/${emoji}`)
       .set('Accept', 'application/json')
       .end((err, res) => {
         if (err) {
