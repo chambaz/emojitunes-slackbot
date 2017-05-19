@@ -97,14 +97,10 @@ function fetchRecommendationsForChannel(bot, message, emoji, playlist) {
 
         // error from API so let user know
         if (err || json.error) {
-          request
-              .get(`https://emojitunes.io/api/msgs/no-results`)
-              .set('Accept', 'application/json')
-              .end((err, res) => {
-                const json = JSON.parse(res.text)
-                bot.reply(message, json.msg)
-              })
-
+          bot.reply(message, 'Oops, something went wrong 😞')
+          return
+        } else if (json.msg) {
+          bot.reply(message, json.msg)
           return
         }
 
