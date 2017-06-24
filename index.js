@@ -23,10 +23,6 @@ if (token) {
   require('beepboop-botkit').start(controller, { debug: true })
 }
 
-// store bots info
-console.log(controller)
-// const botInfo = controller.api.users.list().filter(u => u.name == '@emojtunes')[0]
-
 // reply to a direct mention - @bot hello
 controller.on('mention', handleMessage)
 
@@ -63,10 +59,11 @@ function handleMessage(bot, message) {
 
     // check for username in message
     if (w.startsWith('<') && w.endsWith('>')) {
+      const emojitunesID = bot.api.users.list().filter(u => u.name == '@emojtunes')[0]
       sendTo = w.substring(2, w.length - 1)
 
       // emojitunes was mentioned to reset sendTo
-      if (sendTo == botInfo.id) {
+      if (sendTo == emojitunesID.id) {
         sendTo = false
       } else {
         // if it's a channel split at pipe to get ID
