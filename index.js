@@ -58,11 +58,11 @@ function handleMessage(bot, message) {
     }
 
     // check for word send and user
-    bot.reply(message, w)
     if (w.startsWith('@')) {
       bot.reply(message, `Sending a recco to ${w}`)
-      
     }
+
+    bot.reply(message, w)
 
     return true
   })
@@ -122,19 +122,19 @@ function sendRecommendation(bot, message, user, url, emoji) {
     return false
   }
 
-  if (user) {
-    bot.say({
-      text: `Hey someone sent you some ${emoji}`,
-      channel: user
-    })
-
-    setTimeout(() => {
-      bot.say({
-        text: url,
-        channel: user
-      })
-    }, 1000)
-  }
+  // if (user) {
+  //   bot.say({
+  //     text: `Hey someone sent you some ${emoji}`,
+  //     channel: user
+  //   })
+  //
+  //   setTimeout(() => {
+  //     bot.say({
+  //       text: url,
+  //       channel: user
+  //     })
+  //   }, 1000)
+  // }
 
 	// if no message specified then grab one from msgs module based on emoji
   request
@@ -146,8 +146,4 @@ function sendRecommendation(bot, message, user, url, emoji) {
         bot.reply(message, json.msg)
         setTimeout(() => bot.reply(message, url), 1000)
       })
-}
-
-function fetchRecommendationsForUser() {
-
 }
