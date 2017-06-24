@@ -37,6 +37,13 @@ function handleMessage(bot, message) {
   let playlist = false
   let sendTo = false
 
+  // remove @emojitunes from message
+  const emojitunes = bot.api.users.list().filter(u => u.name == '@emojtunes')[0]
+  message.text = message.text.replace(`<@${emojitunes.id}>`, '')
+
+  bot.reply(message, 'emojitunes id ' + emojitunes.id)
+  bot.reply(message, message.text)
+
   // loop through each word searching for an emoji
   message.text.split(' ').every(word => {
     let w = word.trim()
@@ -59,21 +66,15 @@ function handleMessage(bot, message) {
 
     // check for username in message
     if (w.startsWith('<') && w.endsWith('>')) {
-      const emojitunesID = bot.api.users.list().filter(u => u.name == '@emojtunes')[0]
       sendTo = w.substring(2, w.length - 1)
 
-      // emojitunes was mentioned to reset sendTo
-      if (sendTo == emojitunesID.id) {
-        sendTo = false
-      } else {
-        // if it's a channel split at pipe to get ID
-        if (w.includes('|')) {
-          sendTo = w.split('|')[0]
-          sendTo = sendTo.substring(2, w.length)
-        }
-
-        bot.reply(message, 'You got it, sending it their way 👍')
+      // if it's a channel split at pipe to get ID
+      if (w.includes('|')) {
+        sendTo = w.split('|')[0]
+        sendTo = sendTo.substring(2, w.length)
       }
+
+      bot.reply(message, 'You got it, sending it their way 👍')
     }
 
     return true
