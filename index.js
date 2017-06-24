@@ -58,8 +58,8 @@ function handleMessage(bot, message) {
     }
 
     // check for word send and user
-    if (w.startsWith('<')) {
-      sendTo = w
+    if (w.startsWith('<') && w.endsWith('>')) {
+      sendTo = w.substring(1, w.length - 1)
     }
 
     return true
@@ -132,6 +132,8 @@ function sendRecommendation(bot, message, user, url, emoji) {
         channel: user
       })
     }, 1000)
+
+    return
   }
 
 	// if no message specified then grab one from msgs module based on emoji
