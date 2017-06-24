@@ -24,7 +24,7 @@ if (token) {
 }
 
 // store bots info
-const botInfo = bot.api.users.list().filter(u => u.name == '@emojtunes')[0]
+const botInfo = controller.api.users.list().filter(u => u.name == '@emojtunes')[0]
 
 // reply to a direct mention - @bot hello
 controller.on('mention', handleMessage)
