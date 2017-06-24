@@ -52,12 +52,16 @@ function handleMessage(bot, message) {
 
     // check for username in message
     if (w.startsWith('<') && w.endsWith('>')) {
-      sendTo = w.substring(2, w.length - 1)
+      const userID = w.substring(2, w.length - 1)
 
-      // if it's a channel split at pipe to get ID
-      if (w.includes('|')) {
-        sendTo = w.split('|')[0]
-        sendTo = sendTo.substring(2, w.length)
+      if (userID !== bot.identifyBot().id) {
+        sendTo = userID
+
+        // if it's a channel split at pipe to get ID
+        if (w.includes('|')) {
+          sendTo = w.split('|')[0]
+          sendTo = sendTo.substring(2, w.length)
+        }
       }
     }
 
