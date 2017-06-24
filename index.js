@@ -58,6 +58,7 @@ function handleMessage(bot, message) {
     }
 
     // check for word send and user
+    bot.reply(message, w)
     if (w.startsWith('@')) {
       bot.reply(message, `Sending a recco to ${w}`)
       const userObj = bot.api.users.list().filter(u => u.name == w)
