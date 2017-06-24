@@ -28,7 +28,7 @@ function handleMessage(bot, message) {
   let playlist = false
   let sendTo = false
 
-  bot.reply(message, 'id is ' + BOT.bot_id)
+  bot.reply(message, 'id is ' + BOT.user)
 
   // loop through each word searching for an emoji
   message.text.split(' ').every(word => {
