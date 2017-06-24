@@ -60,6 +60,7 @@ function handleMessage(bot, message) {
     // check for word send and user
     if (w.startsWith('<') && w.endsWith('>')) {
       sendTo = w.substring(1, w.length - 1)
+      bot.reply(message, `Sending reccos to ${w} ${sendTo}`)
     }
 
     return true
