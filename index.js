@@ -35,7 +35,6 @@ controller.on('direct_message', handleMessage)
 function handleMessage(bot, message) {
   let foundEmoji = ''
   let playlist = false
-  let send = false
   let sendTo = false
 
   // loop through each word searching for an emoji
@@ -58,14 +57,8 @@ function handleMessage(bot, message) {
       playlist = true
     }
 
-    // check for word send
-    if (w.toLowerCase() === 'send') {
-      bot.reply(message, 'Sending a recco')
-      send = true
-    }
-
     // check for word send and user
-    if (send && w.startsWith('@')) {
+    if (w.startsWith('@')) {
       bot.reply(message, `Sending a recco to ${w}`)
       const userObj = bot.api.users.list().filter(u => u.name == w)
 
