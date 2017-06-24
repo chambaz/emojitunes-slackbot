@@ -126,7 +126,7 @@ function sendRecommendation(bot, message, sendTo, url, emoji) {
 
     bot.api.users.info({user: message.user}, (err, response) => {
       if (!err) {
-        msg = msg.replace('Someone', response['user'].name)
+        msg = msg.replace('Someone', `@${response['user'].name}`)
       }
 
       bot.say({
