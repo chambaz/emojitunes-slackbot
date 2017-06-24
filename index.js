@@ -7,12 +7,12 @@ const controller = Botkit.slackbot()
 const beepboop = BeepBoop.start(controller)
 let BOT = false
 
-beepboop.on('add_resource', function() {
-  Object.keys(beepboop.workers).forEach(function (id) {
-    // this is an instance of a botkit worker
-    BOT = beepboop.workers[id].identifyBot()
-  })
-})
+// beepboop.on('add_resource', function() {
+//   Object.keys(beepboop.workers).forEach(function (id) {
+//     // this is an instance of a botkit worker
+//     BOT = beepboop.workers[id].identifyBot()
+//   })
+// })
 
 // reply to a direct mention - @bot hello
 controller.on('mention', handleMessage)
@@ -28,7 +28,7 @@ function handleMessage(bot, message) {
   let playlist = false
   let sendTo = false
 
-  bot.reply(message, 'id is ' + BOT.id)
+  bot.reply(message, 'id is ' + bot.identifyBot().id)
 
   // loop through each word searching for an emoji
   message.text.split(' ').every(word => {
