@@ -61,12 +61,7 @@ function handleMessage(bot, message) {
     bot.reply(message, w)
     if (w.startsWith('@')) {
       bot.reply(message, `Sending a recco to ${w}`)
-      const userObj = bot.api.users.list().filter(u => u.name == w)
-
-      if (userObj) {
-        bot.reply(message, `Found them ${userObj[0].id}`)
-        sendTo = userObj[0].id
-      }
+      
     }
 
     return true
