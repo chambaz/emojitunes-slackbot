@@ -67,6 +67,8 @@ function handleMessage(bot, message) {
       // check user id isn't emojitunes itself
       const emojitunes = bot.api.users.list().filter(u => u.name == '@emojtunes')[0]
 
+      bot.reply(message, emojitunes.id)
+
       if (sendTo === emojitunes.id) {
         sendTo = false
       }
