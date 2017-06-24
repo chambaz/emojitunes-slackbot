@@ -2,26 +2,10 @@
 const request = require('superagent')
 const emoji = require('node-emoji')
 const Botkit = require('botkit')
-const token = process.env.SLACK_TOKEN
-const controller = Botkit.slackbot({
-  retry: Infinity,
-  debug: true
-})
+const BeepBoop = require('beepboop-botkit')
+const controller = Botkit.slackbot()
 
-// assume single team mode if we have a SLACK_TOKEN
-if (token) {
-  controller.spawn({
-    token: token
-  }).startRTM(err => {
-    if (err) {
-      throw new Error(err)
-    }
-  })
-
-// otherwise assume multi-team mode - setup beep boop resourcer connection
-} else {
-  require('beepboop-botkit').start(controller, { debug: true })
-}
+BeepBoop.start(controller)
 
 // reply to a direct mention - @bot hello
 controller.on('mention', handleMessage)
@@ -36,9 +20,6 @@ function handleMessage(bot, message) {
   let foundEmoji = ''
   let playlist = false
   let sendTo = false
-
-  // bot.reply(message, 'emojitunes id ' + emojitunes.id)
-  bot.reply(message, message.text)
 
   // loop through each word searching for an emoji
   message.text.split(' ').every(word => {
@@ -63,15 +44,6 @@ function handleMessage(bot, message) {
     // check for username in message
     if (w.startsWith('<') && w.endsWith('>')) {
       sendTo = w.substring(2, w.length - 1)
-
-      // check user id isn't emojitunes itself
-      const emojitunes = bot.api.users.list().filter(u => u.name == '@emojtunes')
-
-      bot.reply(message, emojitunes)
-
-      if (sendTo === emojitunes.id) {
-        sendTo = false
-      }
 
       // if it's a channel split at pipe to get ID
       if (w.includes('|')) {
