@@ -58,7 +58,7 @@ function handleMessage(bot, message) {
     }
 
     // check for word send and user
-    if (w.startsWith('@')) {
+    if (w.startsWith('<')) {
       bot.reply(message, `Sending a recco to ${w}`)
     }
 
