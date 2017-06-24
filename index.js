@@ -64,6 +64,7 @@ function handleMessage(bot, message) {
       // if it's a channel split at pipe to get ID
       if (w.includes('|')) {
         sendTo = w.split('|')[0]
+        sendTo = sendTo.substring(2, w.length)
       }
 
       bot.reply(message, 'You got it, sending it their way 👍' + sendTo)
