@@ -4,8 +4,15 @@ const emoji = require('node-emoji')
 const Botkit = require('botkit')
 const BeepBoop = require('beepboop-botkit')
 const controller = Botkit.slackbot()
+const beepboop = BeepBoop.start(controller)
+let BOT = false
 
-BeepBoop.start(controller)
+beepboop.on('add_resource', function() {
+  Object.keys(beepboop.workers).forEach(function (id) {
+    // this is an instance of a botkit worker
+    BOT = beepboop.workers[id]
+  })
+})
 
 // reply to a direct mention - @bot hello
 controller.on('mention', handleMessage)
@@ -20,6 +27,8 @@ function handleMessage(bot, message) {
   let foundEmoji = ''
   let playlist = false
   let sendTo = false
+
+  bot.reply(message, 'id is ' + BOT.id)
 
   // loop through each word searching for an emoji
   message.text.split(' ').every(word => {
