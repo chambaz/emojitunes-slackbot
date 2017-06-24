@@ -23,6 +23,9 @@ if (token) {
   require('beepboop-botkit').start(controller, { debug: true })
 }
 
+// store bots info
+const botInfo = bot.api.users.list().filter(u => u.name == '@emojtunes')[0]
+
 // reply to a direct mention - @bot hello
 controller.on('mention', handleMessage)
 
@@ -61,13 +64,18 @@ function handleMessage(bot, message) {
     if (w.startsWith('<') && w.endsWith('>')) {
       sendTo = w.substring(2, w.length - 1)
 
-      // if it's a channel split at pipe to get ID
-      if (w.includes('|')) {
-        sendTo = w.split('|')[0]
-        sendTo = sendTo.substring(2, w.length)
-      }
+      // emojitunes was mentioned to reset sendTo
+      if (sendTo == botInfo.id) {
+        sendTo = false
+      } else {
+        // if it's a channel split at pipe to get ID
+        if (w.includes('|')) {
+          sendTo = w.split('|')[0]
+          sendTo = sendTo.substring(2, w.length)
+        }
 
-      bot.reply(message, 'You got it, sending it their way 👍')
+        bot.reply(message, 'You got it, sending it their way 👍')
+      }
     }
 
     return true
