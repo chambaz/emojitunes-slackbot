@@ -130,7 +130,7 @@ function sendRecommendation(bot, message, sendTo, url, emoji) {
 
   // sending recommendation to a user
   if (sendTo) {
-    let msg = `Hey! Someone sent you some ${emoji}`
+    let msg = `Hey! Someone sent some ${emoji} this way`
 
     // find username of original sender
     bot.api.users.info({user: message.user}, (err, response) => {
