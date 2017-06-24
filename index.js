@@ -35,6 +35,8 @@ controller.on('direct_message', handleMessage)
 function handleMessage(bot, message) {
   let foundEmoji = ''
   let playlist = false
+  let send = false
+  let sendTo = false
 
   // loop through each word searching for an emoji
   message.text.split(' ').every(word => {
@@ -56,6 +58,20 @@ function handleMessage(bot, message) {
       playlist = true
     }
 
+    // check for word send
+    if (w.toLowerCase() === 'send') {
+      send = true
+    }
+
+    // check for word send and user
+    if (send && w.startsWith('@')) {
+      const userObj = bot.api.users.list().filter(u => u.name == w)
+
+      if (userObj) {
+        sendTo = userObj[0].id
+      }
+    }
+
     return true
   })
 
@@ -69,17 +85,16 @@ function handleMessage(bot, message) {
           const json = JSON.parse(res.text)
           bot.reply(message, json.msg)
         })
-
   // emoji found so send recommendations back
   } else {
     console.log('Found emoji!', foundEmoji)
-    fetchRecommendationsForChannel(bot, message, foundEmoji, playlist)
+    fetchRecommendations(bot, message, sendTo, foundEmoji, playlist)
   }
 }
 
 // fetch recommendations from emojitunes API
 // pass data on and send recommendation to channel
-function fetchRecommendationsForChannel(bot, message, emoji, playlist) {
+function fetchRecommendations(bot, message, user, emoji, playlist) {
   console.log('Making request...')
 
   const type = playlist ? 'playlists' : 'tracks'
@@ -104,15 +119,29 @@ function fetchRecommendationsForChannel(bot, message, emoji, playlist) {
           return
         }
 
-        sendRecommendationToChannel(bot, message, json.items[0].url, emoji)
+        sendRecommendation(bot, message, user, json.items[0].url, emoji)
       })
 }
 
 // send a recommendation to a channel
-function sendRecommendationToChannel(bot, message, url, emoji) {
+function sendRecommendation(bot, message, user, url, emoji) {
 	// we need the recommendation URL
   if (!url) {
     return false
+  }
+
+  if (user) {
+    bot.say({
+      text: `Hey someone sent you some ${emoji}`,
+      channel: user
+    })
+
+    setTimeout(() => {
+      bot.say({
+        text: url,
+        channel: user
+      })
+    }, 1000)
   }
 
 	// if no message specified then grab one from msgs module based on emoji
@@ -125,4 +154,8 @@ function sendRecommendationToChannel(bot, message, url, emoji) {
         bot.reply(message, json.msg)
         setTimeout(() => bot.reply(message, url), 1000)
       })
+}
+
+function fetchRecommendationsForUser() {
+
 }
