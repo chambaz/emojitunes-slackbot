@@ -38,10 +38,10 @@ function handleMessage(bot, message) {
   let sendTo = false
 
   // remove @emojitunes from message
-  const emojitunes = bot.api.users.list().filter(u => u.name == '@emojtunes')[0]
-  message.text = message.text.replace(`<@${emojitunes.id}>`, '')
+  // const emojitunes = bot.api.users.list().filter(u => u.name == '@emojtunes')[0]
+  // message.text = message.text.replace(`<@${emojitunes.id}>`, '')
 
-  bot.reply(message, 'emojitunes id ' + emojitunes.id)
+  // bot.reply(message, 'emojitunes id ' + emojitunes.id)
   bot.reply(message, message.text)
 
   // loop through each word searching for an emoji
