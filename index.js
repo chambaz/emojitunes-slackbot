@@ -122,17 +122,25 @@ function sendRecommendation(bot, message, sendTo, url, emoji) {
   }
 
   if (sendTo) {
-    bot.say({
-      text: `Hey! ${message.user} sent you some ${emoji}`,
-      channel: sendTo
-    })
+    let msg = `Hey! Someone sent you some ${emoji}`
 
-    setTimeout(() => {
+    bot.api.users.info({user: message.user}, (err, response) => {
+      if (!err) {
+        msg = msg.replace('Someone', response['user'])
+      }
+
       bot.say({
-        text: url,
+        text: msg,
         channel: sendTo
       })
-    }, 1000)
+
+      setTimeout(() => {
+        bot.say({
+          text: url,
+          channel: sendTo
+        })
+      }, 1000)
+    })
 
     return
   }
