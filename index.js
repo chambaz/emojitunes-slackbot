@@ -60,14 +60,17 @@ function handleMessage(bot, message) {
 
     // check for word send
     if (w.toLowerCase() === 'send') {
+      bot.reply(message, 'Sending a recco')
       send = true
     }
 
     // check for word send and user
     if (send && w.startsWith('@')) {
+      bot.reply(message, `Sending a recco to ${w}`)
       const userObj = bot.api.users.list().filter(u => u.name == w)
 
       if (userObj) {
+        bot.reply(message, `Found them ${userObj[0].id}`)
         sendTo = userObj[0].id
       }
     }
