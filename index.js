@@ -67,7 +67,7 @@ function handleMessage(bot, message) {
         sendTo = sendTo.substring(2, w.length)
       }
 
-      bot.reply(message, 'You got it, sending it their way 👍' + sendTo)
+      bot.reply(message, 'You got it, sending it their way 👍')
     }
 
     return true
