@@ -121,19 +121,25 @@ function sendRecommendation(bot, message, sendTo, url, emoji) {
     return false
   }
 
+  // sending recommendation to a user
   if (sendTo) {
     let msg = `Hey! Someone sent you some ${emoji}`
 
+    // find username of original sender
     bot.api.users.info({user: message.user}, (err, response) => {
+
+      // update message with original senders name
       if (!err) {
         msg = msg.replace('Someone', `@${response['user'].name}`)
       }
 
+      // let them know the recco was sent
       bot.say({
         text: msg,
         channel: sendTo
       })
 
+      // send user recco
       setTimeout(() => {
         bot.say({
           text: url,
