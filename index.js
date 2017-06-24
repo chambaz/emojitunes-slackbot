@@ -57,10 +57,10 @@ function handleMessage(bot, message) {
       playlist = true
     }
 
-    // check for word send and user
+    // check for username in message
     if (w.startsWith('<') && w.endsWith('>')) {
       sendTo = w.substring(2, w.length - 1)
-      bot.reply(message, 'You got it, sending it their way 👍')
+      bot.reply(message, 'You got it, sending it their way 👍' + sendTo)
     }
 
     return true
