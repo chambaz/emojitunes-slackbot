@@ -60,7 +60,7 @@ function handleMessage(bot, message) {
     // check for word send and user
     if (w.startsWith('<') && w.endsWith('>')) {
       sendTo = w.substring(2, w.length - 1)
-      bot.reply(message, `Sending reccos to ${w} ${sendTo}`)
+      bot.reply(message, 'You got it, sending it their way 👍')
     }
 
     return true
@@ -85,7 +85,7 @@ function handleMessage(bot, message) {
 
 // fetch recommendations from emojitunes API
 // pass data on and send recommendation to channel
-function fetchRecommendations(bot, message, user, emoji, playlist) {
+function fetchRecommendations(bot, message, sendTo, emoji, playlist) {
   console.log('Making request...')
 
   const type = playlist ? 'playlists' : 'tracks'
@@ -110,27 +110,27 @@ function fetchRecommendations(bot, message, user, emoji, playlist) {
           return
         }
 
-        sendRecommendation(bot, message, user, json.items[0].url, emoji)
+        sendRecommendation(bot, message, sendTo, json.items[0].url, emoji)
       })
 }
 
 // send a recommendation to a channel
-function sendRecommendation(bot, message, user, url, emoji) {
+function sendRecommendation(bot, message, sendTo, url, emoji) {
 	// we need the recommendation URL
   if (!url) {
     return false
   }
 
-  if (user) {
+  if (sendTo) {
     bot.say({
-      text: `Hey someone sent you some ${emoji}`,
-      channel: user
+      text: `Hey! ${message.user} sent you some ${emoji}`,
+      channel: sendTo
     })
 
     setTimeout(() => {
       bot.say({
         text: url,
-        channel: user
+        channel: sendTo
       })
     }, 1000)
 
