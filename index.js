@@ -60,7 +60,7 @@ function handleMessage(bot, message) {
   })
 
   if (sendTo) {
-    bot.reply(message, 'You got it, sending it their way 👍')
+    bot.reply(message, 'You got it, sending it their way 👍 ')
   }
 
   // no emoji found so let user know
